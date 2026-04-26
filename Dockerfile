@@ -1,14 +1,26 @@
-# Используем образ с Java 17
-FROM openjdk:17-jdk-slim
+FROM bellsoft/liberica-openjdk-alpine:17
 
-# Создаем папку для приложения
 WORKDIR /app
 
-# Копируем всё из твоего проекта в контейнер
 COPY . .
 
-# Собираем проект внутри контейнера
+# Даем права на запуск градла (на всякий случай)
+RUN chmod +x gradlew
+
 RUN ./gradlew clean build -x test
 
-# Запускаем сервер (проверь, что имя файла совпадает с твоим проектом)
 CMD ["java", "-jar", "build/libs/myhabitserver-all.jar"]
+
+FROM bellsoft/liberica-openjdk-alpine:17
+
+WORKDIR /app
+
+COPY . .
+
+# Даем права на запуск градла (на всякий случай)
+RUN chmod +x gradlew
+
+RUN ./gradlew clean build -x test
+
+CMD ["java", "-jar", "build/libs/myhabitserver-all.jar"]
+
