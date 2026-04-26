@@ -8,6 +8,6 @@ ktor:
 
 storage:
   driverClassName: "org.postgresql.Driver"
-  jdbcURL: "${JDBC_URL}"
-  user: "${DB_USER}"
-  password: "${DB_PASSWORD}"
+  jdbcURL: $JDBC_URL
+  user: $DB_USER
+  password: $DB_PASSWORD
