@@ -1,6 +1,6 @@
 ktor:
   deployment:
-    port: 8080
+    port: 10000
     host: 0.0.0.0
   application:
     modules:
@@ -8,6 +8,6 @@ ktor:
 
 storage:
   driverClassName: "org.postgresql.Driver"
-  jdbcURL: "jdbc:postgresql://localhost:5432/HabitTrackerDB"
-  user: "postgres"
-  password: "Blessjop1404"
+  jdbcURL: ${JDBC_URL}
+  user: ${DB_USER}
+  password: ${DB_PASSWORD}
