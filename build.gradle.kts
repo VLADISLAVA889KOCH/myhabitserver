@@ -5,6 +5,8 @@ val exposed_version = "0.41.1"
 plugins {
     kotlin("jvm") version "1.9.23"
     kotlin("plugin.serialization") version "1.9.23"
+    id("io.ktor.plugin") version "2.3.12"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     application
 }
 

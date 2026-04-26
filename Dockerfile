@@ -1,26 +1,20 @@
+# Используем легкий образ с Java 17
 FROM bellsoft/liberica-openjdk-alpine:17
 
+# Указываем рабочую папку внутри сервера
 WORKDIR /app
 
+# Копируем абсолютно все файлы проекта в сервер
 COPY . .
 
-# Даем права на запуск градла (на всякий случай)
+# Даем права на выполнение скрипта сборки
 RUN chmod +x gradlew
 
-RUN ./gradlew clean build -x test
+# Собираем "толстый" JAR-файл (shadowJar), который содержит твой код и все библиотеки
+RUN ./gradlew shadowJar --no-daemon
 
-CMD ["java", "-jar", "build/libs/myhabitserver-all.jar"]
+# Команда для запуска. Мы используем маску *-all.jar,
+# так как плагин shadow всегда создает файл с таким окончанием.
+CMD ["sh", "-c", "java -jar build/libs/*-all.jar"]
 
-FROM bellsoft/liberica-openjdk-alpine:17
-
-WORKDIR /app
-
-COPY . .
-
-# Даем права на запуск градла (на всякий случай)
-RUN chmod +x gradlew
-
-RUN ./gradlew clean build -x test
-
-CMD ["java", "-jar", "build/libs/myhabitserver-all.jar"]
 
