@@ -1,19 +1,13 @@
 FROM bellsoft/liberica-openjdk-alpine:17
-
 WORKDIR /app
-
-# Копируем всё
 COPY . .
+RUN chmod +x gradlew
 
-# Магия для исправления ошибок Windows и прав доступа
-RUN tr -d '\r' < gradlew > gradlew_unix && \
-    mv gradlew_unix gradlew && \
-    chmod +x gradlew
+# Сборка стандартного дистрибутива
+RUN ./gradlew installDist -x test --no-daemon
 
-# Пробуем собрать. Если упадет, --info покажет НАСТОЯЩУЮ причину
-RUN ./gradlew shadowJar --no-daemon --info
-
-CMD ["sh", "-c", "java -jar build/libs/*-all.jar"]
-
+# Команда запуска из папки bin
+# ВНИМАНИЕ: Проверь название папки ниже. Обычно это название проекта в нижнем регистре.
+CMD ["./build/install/HabitServer/bin/HabitServer"]
 
 
