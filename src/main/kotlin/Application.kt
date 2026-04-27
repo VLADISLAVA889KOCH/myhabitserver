@@ -53,7 +53,7 @@ fun Application.module() {
             // Берем настройки из системы (на Render мы их пропишем),
             // либо используем дефолтные для локального теста
             val jwtSecret = System.getenv("JWT_SECRET") ?: "super-secret-key-123"
-            val jwtIssuer = System.getenv("JWT_ISSUER") ?: "http://0.0.0.0:8080"
+            val jwtIssuer = System.getenv("JWT_ISSUER") ?: "https://myhabitserver.onrender.com"
             val jwtAudience = "users"
 
             verifier(
