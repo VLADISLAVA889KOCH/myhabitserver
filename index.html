@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHabit — Твой личный трекер</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Подключаем Mak-SemiBold */
+        @font-face {
+            font-family: 'Mak';
+            src: url('fonts/Mak-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        :root {
+            --brand-green: #2D5A42;    /* Цвет лого и заголовков */
+            --brand-orange: #E67E22;   /* Цвет кнопки */
+            --text-dark: #2B1B12;      /* Основной текст */
+            --text-gray: #9E9E9E;      /* Второстепенный текст */
+            --bg-color: #F5F5F0;       /* Фон приложения */
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif; /* Montserrat для всего по умолчанию */
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 24px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-family: 'Mak', serif;
+            font-size: 2.4rem;
+            color: var(--brand-green);
+            margin: 0;
+            letter-spacing: 0.02em;
+        }
+
+        main {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Mak', serif; /* Заголовок тоже Mak */
+            font-size: 2.2rem;
+            line-height: 1.1;
+            margin: 0 0 20px 0;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .description {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+
+        /* Кнопка в цвете #E67E22 */
+        .download-btn {
+            display: block;
+            background-color: var(--brand-orange);
+            color: #ffffff;
+            padding: 18px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.25);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 8px rgba(230, 126, 34, 0.2);
+        }
+
+        .features-grid {
+            margin-top: 50px;
+            display: grid;
+            gap: 20px;
+            text-align: left;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 24px;
+            border-radius: 24px;
+            border: 1px solid rgba(43, 27, 18, 0.05);
+        }
+
+        .feature-card h3 {
+            font-family: 'Mak', serif; /* Заголовки карточек Mak */
+            font-size: 1.4rem;
+            margin: 0 0 10px 0;
+            color: var(--brand-green);
+        }
+
+        .feature-card p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: var(--brand-orange);
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 50px;
+            padding-bottom: 24px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 360px) {
+            h1 { font-size: 1.8rem; }
+            .logo { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">MyHabit</div>
+        </header>
+
+        <main>
+            <h1>Привычки в порядке,<br>цели — перед глазами</h1>
+            <p class="description">
+                Простой и эстетичный трекер. Мы помогаем не забывать о важном и видеть свой реальный прогресс без лишнего шума.
+            </p>
+
+            <a href="app-release.apk" class="download-btn">
+                Установить
+            </a>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Вижн-борд</h3>
+                    <p>Твои мечты не просто в голове. <span class="highlight">Визуализируй их прямо в приложении</span>: загружай фото и связывай их со своими привычками.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3>Статистика</h3>
+                    <p>Наглядный расчет серий побед. Мы покажем, как маленькие ежедневные шаги превращаются в большие достижения.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            © 2026 MYHABIT APP • DESIGNED FOR YOU
+        </footer>
+    </div>
+
+</body>
+</html>
