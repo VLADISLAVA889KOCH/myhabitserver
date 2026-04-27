@@ -50,10 +50,9 @@ fun Application.module() {
     // 5. Настройка безопасности (Authentication)
     authentication {
         jwt("auth-jwt") {
-            // Берем настройки из системы (на Render мы их пропишем),
-            // либо используем дефолтные для локального теста
+            // Теперь сервер будет брать данные из тех 5 пунктов, что ты прислала
             val jwtSecret = System.getenv("JWT_SECRET") ?: "super-secret-key-123"
-            val jwtIssuer = System.getenv("JWT_ISSUER") ?: "https://myhabitserver.onrender.com"
+            val jwtIssuer = System.getenv("JWT_ISSUER") ?: "https://myhabitserver.onrender.com/"
             val jwtAudience = "users"
 
             verifier(
@@ -65,12 +64,13 @@ fun Application.module() {
 
             validate { credential ->
                 val userIdClaim = credential.payload.getClaim("userId")
+                // Пробуем достать ID как число или как строку (так надежнее)
                 val userId = userIdClaim.asInt() ?: userIdClaim.asString()?.toIntOrNull()
 
                 if (userId != null) {
                     JWTPrincipal(credential.payload)
                 } else {
-                    println("!!! ОШИБКА JWT: userId не найден в токене")
+                    println("!!! ОШИБКА: userId не найден в токене")
                     null
                 }
             }

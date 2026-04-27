@@ -16,7 +16,7 @@ import java.security.MessageDigest
 import java.util.*
 
 const val jwtSecret = "super-secret-key-123"
-const val jwtIssuer = "https://myhabitserver.onrender.com"
+const val jwtIssuer = "https://myhabitserver.onrender.com/"
 const val jwtAudience = "users"
 
 fun hashPassword(password: String): String {
