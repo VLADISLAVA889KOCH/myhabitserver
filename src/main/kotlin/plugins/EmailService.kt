@@ -21,6 +21,11 @@ object EmailService {
             put("mail.smtp.socketFactory.port", "465")
             put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
 
+            put("mail.smtp.connectiontimeout", "15000")
+            put("mail.smtp.timeout", "15000")
+            put("mail.smtp.writetimeout", "15000")
+            put("mail.smtp.socketFactory.fallback", "false")
+
             // Убираем starttls, так как SSL работает по-другому
             // put("mail.smtp.starttls.enable", "true") <- это можно удалить или закомментировать
 
