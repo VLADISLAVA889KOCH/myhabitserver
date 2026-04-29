@@ -12,16 +12,18 @@ object EmailService {
     fun sendCode(userEmail: String, code: String): Boolean {
 
         val props = Properties().apply {
-            put("mail.smtp.host", "smtp.mail.ru")
-            put("mail.smtp.port", "465")
             put("mail.smtp.auth", "true")
-            put("mail.smtp.ssl.enable", "true")
+            put("mail.smtp.starttls.enable", "true") // Включаем STARTTLS
+            put("mail.smtp.host", "smtp.mail.ru")
+            put("mail.smtp.port", "587") // Меняем порт на 587
 
-            // Попробуем БЕЗ явного указания SocketFactory (иногда это помогает на Render)
-            // Либо добавим вот эти параметры для "пробивной" способности:
+            // Эти настройки помогут пройти через фильтры Render
+            put("mail.smtp.starttls.required", "true")
             put("mail.smtp.ssl.protocols", "TLSv1.2")
+
             put("mail.smtp.connectiontimeout", "20000")
             put("mail.smtp.timeout", "20000")
+            put("mail.debug", "true")
         }
 
 
@@ -40,7 +42,7 @@ object EmailService {
 
             // ЯВНОЕ подключение и отправка (решает проблему с пользователем root)
             val transport = session.getTransport("smtp")
-            transport.connect("smtp.mail.ru", username, password)
+            transport.connect("smtp.mail.ru", 587, username, password)
             transport.sendMessage(message, message.allRecipients)
             transport.close()
 
