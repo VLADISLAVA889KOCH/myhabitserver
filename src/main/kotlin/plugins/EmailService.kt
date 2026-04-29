@@ -13,14 +13,20 @@ object EmailService {
     fun sendCode(userEmail: String, code: String): Boolean {
         val props = Properties().apply {
             put("mail.smtp.auth", "true")
-            put("mail.smtp.starttls.enable", "true")
             put("mail.smtp.host", "smtp.mail.ru")
-            put("mail.smtp.port", "587")
-            put("mail.smtp.ssl.protocols", "TLSv1.2")
-            put("mail.smtp.connectiontimeout", "5000") // Таймаут 5 сек
-            put("mail.smtp.timeout", "5000")
-        }
+            put("mail.smtp.port", "465") // Меняем порт
 
+            // Включаем SSL (обязательно для порта 465)
+            put("mail.smtp.ssl.enable", "true")
+            put("mail.smtp.socketFactory.port", "465")
+            put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
+
+            // Убираем starttls, так как SSL работает по-другому
+            // put("mail.smtp.starttls.enable", "true") <- это можно удалить или закомментировать
+
+            put("mail.smtp.connectiontimeout", "10000") // Увеличим до 10 сек для надежности на Render
+            put("mail.smtp.timeout", "10000")
+        }
         val session = Session.getInstance(props, object : Authenticator() {
             override fun getPasswordAuthentication() = PasswordAuthentication(username, password)
         })
