@@ -7,11 +7,12 @@ import java.util.*
 
 object EmailService {
     private val username = "v_kochergina@internet.ru"
-    private val password = "dvtiUonMFUmmHnQyD9sv"
+    private val password = "GfptdLI0R6i9QnvlzJSq"
 
     // Теперь функция возвращает true, если письмо ушло, и false, если адрес неверный
     fun sendCode(userEmail: String, code: String): Boolean {
         val props = Properties().apply {
+            put("mail.debug", "true")
             put("mail.smtp.auth", "true")
             put("mail.smtp.host", "smtp.mail.ru")
             put("mail.smtp.port", "465") // Меняем порт
@@ -33,14 +34,17 @@ object EmailService {
             put("mail.smtp.timeout", "10000")
         }
         val session = Session.getInstance(props, object : Authenticator() {
+
             override fun getPasswordAuthentication() = PasswordAuthentication(username, password)
+
         })
+        session.debug = true
 
         return try {
             val message = MimeMessage(session).apply {
                 setFrom(InternetAddress(username))
                 setRecipients(Message.RecipientType.TO, InternetAddress.parse(userEmail))
-                subject = "Подтверждение регистрации в MyHabit"
+                subject = "Подтверждение для доступа в MyHabit"
                 setText("Ваш код подтверждения: $code\nВведите его в приложении, чтобы активировать аккаунт.")
             }
             Transport.send(message)
