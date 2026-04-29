@@ -56,6 +56,10 @@ dependencies {
     // Additional Ktor features
     implementation("io.ktor:ktor-server-host-common:2.3.12")
     implementation("io.ktor:ktor-server-config-yaml:2.3.12")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.json:json:20231013")
 
     // Testing
     testImplementation("io.ktor:ktor-server-test-host:2.3.12")

@@ -1,56 +1,53 @@
+
 package com.example.plugins
 
-import jakarta.mail.*
-import jakarta.mail.internet.InternetAddress
-import jakarta.mail.internet.MimeMessage
-import java.util.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import com.google.gson.Gson
+import org.json.JSONObject
 
 object EmailService {
-    private val username = "v_kochergina@internet.ru"
-    private val password = "CLQD8Qk33U19HRsdNfOG"
+    // ВСТАВЬ СЮДА ТОКЕН, КОТОРЫЙ ПОЛУЧИШЬ В ШАГЕ API
+    private val apiToken = "mlsn.cb5dd2d1206656a63d1113f1acf376b5a456748dd96dec3df51fc12e6d621c8c"
+    private val senderEmail = "MS_XXXXXX@trial-XXXXX.mlsend.com" // MailerSend даст тебе тестовый email отправителя
 
     fun sendCode(userEmail: String, code: String): Boolean {
+        val client = OkHttpClient()
+        val mediaType = "application/json".toMediaType()
 
-        val props = Properties().apply {
-            put("mail.smtp.auth", "true")
-            put("mail.smtp.starttls.enable", "true") // Включаем STARTTLS
-            put("mail.smtp.host", "smtp.mail.ru")
-            put("mail.smtp.port", "587") // Меняем порт на 587
-
-            // Эти настройки помогут пройти через фильтры Render
-            put("mail.smtp.starttls.required", "true")
-            put("mail.smtp.ssl.protocols", "TLSv1.2")
-
-            put("mail.smtp.connectiontimeout", "20000")
-            put("mail.smtp.timeout", "20000")
-            put("mail.debug", "true")
+        val jsonBody = JSONObject().apply {
+            put("from", JSONObject().apply {
+                put("email", senderEmail)
+            })
+            put("to", org.json.JSONArray().put(JSONObject().apply {
+                put("email", userEmail)
+            }))
+            put("subject", "Код подтверждения MyHabit")
+            put("text", "Ваш код подтверждения: $code")
         }
 
-
-        // Создаем сессию
-        val session = Session.getInstance(props)
-        session.debug = true
+        val request = Request.Builder()
+            .url("https://api.mailersend.com/v1/email")
+            .post(jsonBody.toString().toRequestBody(mediaType))
+            .addHeader("Authorization", "Bearer $apiToken")
+            .addHeader("Content-Type", "application/json")
+            .build()
 
         return try {
-            val message = MimeMessage(session).apply {
-                setFrom(InternetAddress(username))
-                setRecipients(Message.RecipientType.TO, InternetAddress.parse(userEmail))
-                subject = "Код подтверждения MyHabit"
-                // Сделали текст чуть более формальным, чтобы не попасть в спам
-                setText("Здравствуйте!\n\nВаш код подтверждения для приложения MyHabit: $code\n\nЕсли вы не запрашивали этот код, просто проигнорируйте письмо.")
+            client.newCall(request).execute().use { response ->
+                val responseBody = response.body?.string()
+                if (response.isSuccessful) {
+                    println("ПОЧТА (MailerSend): Успешно!")
+                    true
+                } else {
+                    println("ОШИБКА (MailerSend): ${response.code} $responseBody")
+                    false
+                }
             }
-
-            // ЯВНОЕ подключение и отправка (решает проблему с пользователем root)
-            val transport = session.getTransport("smtp")
-            transport.connect("smtp.mail.ru", 587, username, password)
-            transport.sendMessage(message, message.allRecipients)
-            transport.close()
-
-            println("ПОЧТА: Письмо успешно отправлено на $userEmail")
-            true
         } catch (e: Exception) {
-            println("ОШИБКА ПОЧТЫ: ${e.localizedMessage}")
-            e.printStackTrace() // Выведет подробности ошибки в логи
+            println("ОШИБКА СЕТИ: ${e.localizedMessage}")
             false
         }
     }
