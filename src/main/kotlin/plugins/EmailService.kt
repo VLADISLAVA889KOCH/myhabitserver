@@ -10,22 +10,20 @@ object EmailService {
     private val password = "CLQD8Qk33U19HRsdNfOG"
 
     fun sendCode(userEmail: String, code: String): Boolean {
+
         val props = Properties().apply {
-            put("mail.smtp.auth", "true")
             put("mail.smtp.host", "smtp.mail.ru")
             put("mail.smtp.port", "465")
+            put("mail.smtp.auth", "true")
             put("mail.smtp.ssl.enable", "true")
-            put("mail.smtp.socketFactory.port", "465")
-            put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory")
 
-            // Настройки таймаутов для стабильности на Render
-            put("mail.smtp.connectiontimeout", "15000")
-            put("mail.smtp.timeout", "15000")
-            put("mail.smtp.writetimeout", "15000")
-
-            // Включаем дебаг, чтобы видеть процесс в логах Render
-            put("mail.debug", "true")
+            // Попробуем БЕЗ явного указания SocketFactory (иногда это помогает на Render)
+            // Либо добавим вот эти параметры для "пробивной" способности:
+            put("mail.smtp.ssl.protocols", "TLSv1.2")
+            put("mail.smtp.connectiontimeout", "20000")
+            put("mail.smtp.timeout", "20000")
         }
+
 
         // Создаем сессию
         val session = Session.getInstance(props)
