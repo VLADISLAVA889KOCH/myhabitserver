@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>MyHabit — Твой личный трекер</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <style>
+        @font-face {
+            font-family: 'MakBold';
+            src: url('mak-bold.otf') format('opentype');
+            font-weight: bold; font-style: normal; font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'UnboundedBold';
+            src: url('unbounded-bold.ttf') format('truetype');
+            font-weight: bold; font-style: normal; font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'MontserratRegular';
+            src: url('montserrat-regular.ttf') format('truetype');
+            font-weight: normal; font-style: normal; font-display: swap;
+        }
+
+        :root {
+            --brand-green: #2D5A42;
+            --brand-orange: #E67E22;
+            --text-dark: #2B1B12;
+            --text-gray: #9E9E9E;
+            --bg-color: #F5F5F0;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'MontserratRegular', Arial, sans-serif;
+            background-color: var(--bg-color); 
+            color: var(--text-dark);
+            margin: 0; padding: 0; overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%; max-width: 450px; margin: 0 auto; padding: 40px 24px; 
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+
+        .logo {
+            font-family: 'MakBold', serif;
+            font-size: 3.5rem; color: var(--brand-green);
+            margin: 0 0 50px 0; text-align: center;
+            font-weight: normal; -webkit-text-stroke: 1px var(--brand-green);
+        }
+
+        main { flex-grow: 1; text-align: center; }
+
+        h1 {
+            font-family: 'UnboundedBold', sans-serif;
+            font-size: 1.8rem; line-height: 1.3; margin: 0 0 15px 0;
+            color: var(--text-dark); text-transform: uppercase;
+        }
+
+        .description { font-size: 0.95rem; color: var(--text-gray); line-height: 1.5; margin-bottom: 40px; }
+
+        .download-btn {
+            display: block; background-color: var(--brand-orange);
+            color: #ffffff !important; padding: 22px; border-radius: 20px;
+            text-decoration: none; font-family: 'UnboundedBold', sans-serif;
+            font-weight: bold; transition: all 0.3s ease; 
+            text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 50px; 
+            box-shadow: 0 10px 25px rgba(230, 126, 34, 0.4);
+        }
+
+        /* ИСПРАВЛЕННЫЙ КОНТЕЙНЕР ДЛЯ СКРИНОВ */
+        .screenshots-container { 
+            display: flex; gap: 20px; margin: 20px -24px 50px -24px; 
+            padding: 20px 24px; overflow-x: auto; 
+            -webkit-overflow-scrolling: touch; 
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; 
+        }
+        .screenshots-container::-webkit-scrollbar { display: none; }
+
+        /* ИСПРАВЛЕННАЯ РАМКА: Жесткие размеры, чтобы Safari не "раздувал" её */
+        .phone-frame { 
+            min-width: 220px; 
+            max-width: 220px;
+            height: 450px; 
+            background: #1a1a1a; 
+            border-radius: 35px; 
+            padding: 8px; /* Уменьшили паддинг, чтобы скрин был больше */
+            flex-shrink: 0; 
+            scroll-snap-align: center;
+            overflow: hidden; 
+            position: relative;
+            border: 4px solid #2B1B12; /* Добавили видимую границу корпуса */
+        }
+
+        /* ИСПРАВЛЕННЫЙ СКРИН: Теперь он заполняет рамку */
+        .screenshot { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; /* Возвращаем cover для плотного заполнения */
+            object-position: top; /* Всегда показываем верхнюю часть скрина */
+            border-radius: 25px; 
+            display: block;
+            background-color: #000;
+        }
+
+        .features-grid { display: grid; gap: 20px; text-align: left; }
+
+        .feature-card { 
+            background: #ffffff; padding: 26px; border-radius: 30px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03); 
+        }
+
+        .feature-card h3 {
+            font-family: 'UnboundedBold', sans-serif;
+            font-size: 1.2rem; margin: 0 0 12px 0;
+            color: var(--brand-green); text-transform: none; 
+        }
+
+        .feature-card p { margin: 0; line-height: 1.6; font-size: 0.95rem; }
+
+        .highlight { color: var(--brand-orange); font-weight: 600; }
+
+        footer { 
+            margin-top: 60px; padding-bottom: 40px; text-align: center; 
+            font-size: 0.75rem; color: var(--text-gray); text-transform: uppercase; 
+        }
+
+        @media (max-width: 380px) {
+            .logo { font-size: 2.8rem; }
+            h1 { font-size: 1.5rem; }
+            .phone-frame { min-width: 190px; height: 390px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header><div class="logo">MyHabit</div></header>
+        <main>
+            <h1>Привычки в порядке, <br>цели — перед глазами</h1>
+            <p class="description">Простой и эстетичный трекер для тех, кто ценит минимализм и реальный результат.</p>
+            <a href="app-release.apk" class="download-btn">Установить</a>
+            
+            <div class="screenshots-container">
+                <div class="phone-frame"><img src="main_screen.jpg" alt="1" class="screenshot"></div>
+                <div class="phone-frame"><img src="stats_screen.jpg" alt="2" class="screenshot"></div>
+                <div class="phone-frame"><img src="vision_screen.jpg" alt="3" class="screenshot"></div>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Умный список</h3>
+                    <p>Ничего лишнего. <span class="highlight">Фокусируйся на главном</span> с удобным перечнем задач на сегодня.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Доска визуализации</h3>
+                    <p>Визуализируй мечты: загружай фото и связывай их с ежедневными шагами.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Статистика</h3>
+                    <p>Наглядный расчет серий побед. Маленькие действия превращаются в большие достижения.</p>
+                </div>
+            </div>
+        </main>
+        <footer>© 2026 MYHABIT APP • DESIGNED BY VLADISLAVA</footer>
+    </div>
+</body>
+</html>
